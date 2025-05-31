@@ -1,0 +1,26 @@
+
+
+  <link rel="stylesheet" href="/static/css/header.css" />
+    <div class="container">
+        <header class="main-header">
+            <div class="logo">Reportall</div>
+            <nav class="nav-menu">
+              
+              {% url 'homepage' as url %}  
+              <a class="{% if request.path == url %}active{% endif %}" href="{{url}}">Home</a>
+        
+        
+              <a href="#">Signup</a>
+              <a href="#">Login</a>
+        
+              {% url 'aboutUs' as url %} 
+              <a class="{% if request.path == url %}active{% endif %}" href="{{url}}">About Us</a>
+        
+              {% url 'contactUs' as url %} 
+              <a class="{% if request.path == url %}active{% endif %}" href="{{url}}">Contact Us</a>
+            </nav>
+          </header>
+    </div>
+  
+
+
