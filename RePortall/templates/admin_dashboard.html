@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top px-4 py-3">
+        <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="#">RePortall</a>
+
+            <div class="d-flex justify-content-end w-100">
+                <span class="text-white me-4 my-auto">Hello, {{ request.user }}</span>
+                <a style="margin-left: 15px;" class="btn btn-outline-light" href="{% url 'logout' %}">Log Out</a>
+            </div>
+        </div>
+    </nav>
+    <br>
+
+    <div class="container">
+        <div class="row">
+
+            <div class="col">
+                <div class="col-md">
+                    <div class="card text-center text-black mb-3" id="total-orders">
+                        <div class="card-header">
+                            <h5 class="card-title">Totol Customer</h5>
+
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-title">{{total_customers}}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="col-md">
+                    <div class="card text-center text-black mb-3" id="orders-pending">
+                        <div class="card-header">
+                            <h5 class="card-title">Total Reviews</h5>
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-title">{{total_reviews}}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="col-md">
+                    <div class="card text-center text-black mb-3" id="orders-delivered">
+                        <div class="card-header">
+                            <h5 class="card-title">Total pending</h5>
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-title"></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+        <div class="row">
+        <div class="col-lg-4">
+            {% comment %} <h5>CUSTOMERS!</h5> {% endcomment %}
+            <hr>
+            <div class= "card card-body">
+                
+                <table class="table table-sm table-striped table-bordered">
+                    <caption style="caption-side: top; text-align: center; font-size: 20px;font-weight: bold; color:rgb(0, 0, 0); margin-bottom: 5px;"><strong>Customer list</strong></caption>
+                    <tr>
+                        <th class="text-center">customer</th>
+                        <th class="text-center">reviews</th>
+                    </tr>
+                    {% for i in customers %}
+                    <tr>
+                        <td>{{i.name}}</td>
+                        <td>{{i.email}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            {% comment %} <h5>last 5 Reviews</h5> {% endcomment %}
+            <hr>
+            <div class= "card card-body">
+                <table class="table table-sm table-striped table-bordered">
+                    <caption style="caption-side: top; text-align: center; font-size: 20px;font-weight: bold; color:rgb(0, 0, 0); margin-bottom: 5px;"><strong>Review list</strong></caption>
+                    <tr>
+                        <th class="text-center">Description</th>
+                        <th class="text-center">date</th>
+                        <th class="text-center">status</th>
+                        <th class="text-center">address</th>
+                        <th class="text-center">phone number</th>
+                        <th class="text-center">update</th>
+                        <th class="text-center">remove</th>
+                    </tr>
+
+                    {% for i in reviews %}
+    <tr>
+        <td>{{ i.description }}</td>
+        <td>{{ i.date_created }}</td>
+        <td>{{ i.reportsubmission_set.first.status }}</td>
+        <td>{{ i.address }}</td>
+        <td>{{ i.phone }}</td>
+        <td>
+    <a class="btn btn-primary btn-sm" href="{% url 'update_review_admin' i.id %}">Update</a>
+</td>
+<td>
+    {% if i.reportsubmission_set.first.status == 'Completed' %}
+    <a class="btn btn-danger btn-sm" href="{% url 'delete_review_admin' i.id %}">Delete</a>
+{% else %}
+    <button class="btn btn-danger btn-sm" disabled>Delete</button>
+{% endif %}
+
+</td>
+
+    </tr>
+{% endfor %}
+
+                </table>
+            </div>
+        </div> 
+    </div>
+    </div>
+    
+    
+</body>
