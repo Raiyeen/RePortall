@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top px-4 py-3 mb-5">
+        <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="#">RePortall</a>
+
+            <div class="d-flex justify-content-end w-100">
+                <span class="text-white me-4 my-auto">Hello, {{ request.user }}</span>
+                <a style="margin-left: 15px;" class="btn btn-outline-light" href="{% url 'logout' %}">Log Out</a>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="container">
+
+        <div class="row">
+            {% comment %} <div class="col-md">
+                <div class="card card-body">
+                    <h5>Customer</h5>
+                    <hr>
+                    <a class="btn btn-outline-info btn-sm btn-bock" href="">update customer</a>
+                    <br>
+                    <a class="btn btn-outline-danger btn-sm btn-block" href="">delete customer</a>
+                    <br>
+                    <a class="btn btn-outline-secondary btn-sm btn-block" href="{% url 'logout' %}">Log Out</a>
+                </div>
+            </div> {% endcomment %}
+
+            <div class="col-md">
+                <div class="card card-body">
+                    <h5>Contact Information</h5>
+                    <hr>
+                    <p><span style="font-weight: 500; margin-right: 5px; font-size: 20px;">Name: </span>{{customer.name}} </p>
+                    <p ><span style="font-weight: 500; margin-right: 5px; font-size: 20px;">Email: </span>{{customer.email}}</p>
+                </div>
+            </div>
+
+            <div class="col-md">
+                <div class="card card-body">
+                    <h5>Total Reviews</h5>
+                    <hr>
+                    <h1 style="text-align: center; padding: 10px;">{{total_report}}</h1>
+                </div>
+            </div>
+
+        </div>
+
+        <br>
+
+        <div class="row">
+            <div class="col">
+                <div class="card card-body">
+                    <h5 class="text-center">Fill the form to submit a Review</h5>
+                    <br>
+                    <form method="POST" action="{% url 'savereport' %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter description"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="location">Select Your address:</label>
+                            <select name="address" id="address" class="form-control">
+                                <option value="mirpur_10">Mirpur 10</option>
+                                <option value="kazipara">Kazipara</option>
+                                <option value="shewrapara">Shewrapara</option>
+                                <option value="pallabi">Pallabi</option>
+                                <option value="bijoy_soroni">Bijoy Soroni</option>
+                                <option value="agargaon">Agargaon</option>
+                                <option value="uttara">Uttara</option>
+                                <option value="rupnagar">Rupnagar</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter phone number">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="date">Date</label>
+                            <input type="date" class="form-control" id="date" name="date-created">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+
+        <br>
+
+
+        <div class="row">
+            <div class="col-md">
+                <div class="card card-body">
+                    <table class="table table-sm">
+                        <tr>
+                            <th>Description</th>
+                            <th>Address</th>
+                            <th>date</th>
+                            <th>status</th>
+                            <th>update</th>
+                            <th>remove</th>
+                        </tr>
+
+                        {% for i in reportsubmission %}
+                        <tr>
+                            <td>{{i.review.description}}</td>
+                            <td>{{i.review.address}}</td>
+                            <td>{{i.review.date_created}}</td>
+                            <td>{{i.status}}</td>
+                            <td>
+                                <a href="{% url 'update_review' i.id %}" class="btn btn-primary btn-sm text-white">Update</a>
+                            </td>
+                            <td>
+                                <a href="{% url 'delete_review' i.id %}" class="btn btn-danger btn-sm text-white">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
